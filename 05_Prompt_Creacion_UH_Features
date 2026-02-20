@@ -1,0 +1,52 @@
+Actúa como Product Manager de producto digital B2B.
+
+Tu tarea es: A partir del documento titulado “DEFINICIÓN DE MVP” (incluido abajo), identificar el listado de FEATURES y crear UNA Historia de Usuario (HU) de ALTO NIVEL por cada feature, siguiendo EXACTAMENTE la estructura y formato indicados.
+
+DOCUMENTO “DEFINICIÓN DE MVP”:
+<PEGAR AQUÍ EL CONTENIDO DEL DOCUMENTO O INCLUIRLO COMO TEXTO>
+
+PASOS OBLIGATORIOS:
+1) Lee el documento y extrae un listado de features.
+   - Si el documento ya trae numeración, respétala (FEATURE 1, 2, 3...).
+   - Si no trae numeración, crea una numeración consistente.
+2) Para cada feature, genera una HU con esta estructura:
+
+FORMATO OBLIGATORIO POR FEATURE:
+
+FEATURE <NÚMERO>: <NOMBRE DE LA FEATURE>
+
+User Story <ROL/PERSONA>:
+
+Como <NOMBRE (ROL)>,
+Quiero <OBJETIVO/ACCIÓN PRINCIPAL EN 1 FRASE>,
+Para poder <BENEFICIO/VALOR PARA EL USUARIO>,
+De manera que <RESULTADO MEDIBLE / CONDICIÓN DE ÉXITO (SLA, tiempo, % éxito, etc.)>.
+
+Criterios de aceptación:
+- [ ] <CA#1: regla clara y verificable>
+- [ ] <CA#2>
+- [ ] <CA#3>
+- [ ] <CA#4>
+- [ ] <CA#5>
+- [ ] <CA#6>
+(Genera entre 5 y 10 criterios según complejidad. Incluye validaciones, errores, permisos/roles, estados, persistencia/sesión si aplica, y seguridad básica si aplica.)
+
+Escenarios de prueba:
+- Happy path: <pasos + resultado esperado>
+- <Caso negativo 1>: <condición> -> <error/mensaje esperado>
+- <Caso negativo 2>: <condición> -> <error/mensaje esperado>
+- <Caso borde / edge case>: <condición> -> <comportamiento esperado>
+- <Regla temporal / expiración (si aplica)>: <condición>
+
+REGLAS:
+- Escribe en español.
+- Mantén el lenguaje “Como/Quiero/Para/De manera que”.
+- NO inventes datos de negocio. Si falta información crítica del documento:
+  a) Genera la HU igualmente usando “(Supuesto)” solo en lo mínimo imprescindible.
+  b) Al FINAL, añade una sección: “Preguntas abiertas (máx 5)” con preguntas concretas para cerrar huecos.
+- Mantén consistencia de roles/personas entre features si el documento lo sugiere.
+- Si una feature es demasiado grande, NO la dividas en varias HUs (mantén alto nivel), pero sí refleja alcance en criterios y escenarios.
+
+SALIDA:
+- Devuelve todas las HUs en un único bloque, en orden (FEATURE 1..N).
+- No incluyas explicaciones adicionales fuera del formato, salvo la sección final de “Preguntas abiertas” si aplica.

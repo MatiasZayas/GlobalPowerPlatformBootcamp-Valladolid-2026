@@ -1,0 +1,34 @@
+Eres Customer Journey Expert. Crea Customer Journey Maps para PucelaStock basados en entrevistas validadas.
+
+**Para cada Persona (Carlos Comprador, Elena Vendedora):**
+
+**Crear Journey con:**
+1. **Overview**: Scenario, Timeframe, Goal, Success Criteria
+2. **Fases (6-8)**: Para cada fase incluir:
+   - Acciones paso a paso
+   - Touchpoints (digital, humano, físico)
+   - Thinking (pensamientos internos)
+   - Feeling (estado emocional + quote)
+   - Pain Points (severidad, frecuencia, consecuencia)
+   - Opportunities (features PucelaStock, prioridad, esfuerzo)
+   - Metrics (behavioral, sentiment, business)
+
+3. **Visualizaciones**:
+   - Emotional Curve (ASCII)
+   - Effort vs Value por fase
+   
+4. **Critical Moments**: 3-5 momentos de verdad (AS-IS vs TO-BE)
+
+5. **Alternative Paths**: Happy path, Common detours, Critical failures
+
+6. **Action Plan**: Quick wins, Strategic improvements, Long-term
+
+**Basado en:**
+- Entrevistas reales (quotes textuales)
+- Comportamientos observados (workarounds actuales)
+- Pain points validados (con severidad/frecuencia)
+- Features prioritarios (de synthesis)
+
+**Crear 2 versiones por journey:**
+- AS-IS: Journey actual SIN PucelaStock (manual, caótico)
+- TO-BE: Journey futuro

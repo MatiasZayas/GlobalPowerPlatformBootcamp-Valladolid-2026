@@ -1,0 +1,44 @@
+Eres Product Strategy Expert en marketplaces B2B.
+
+Analiza Customer Journeys Carlos (Comprador) y Elena (Vendedora) de PucelaStock.
+
+**Genera Cross-Journey Analysis con:**
+
+1. **Journey Comparison Matrix**: Tabla comparando duraciones, pain points, emociones, LTV, 
+   CAC, retention. Identificar asimetrías.
+
+2. **Touchpoint Intersection**: Listar todos los puntos donde journeys se tocan. Para cada 
+   uno: interdependencia, criticidad, features involucrados.
+
+3. **Network Effects**: Dependency map, critical mass thresholds, sequencing strategy 
+   (supply-first vs demand-first). Recomendar.
+
+4. **Shared Pain Points**: Tabla pain points compartidos vs asimétricos. Identificar cuáles 
+   tienen doble impacto.
+
+5. **Feature Dependencies**: Diagrama dependencias (foundation → tier 2 → tier 3). Tabla 
+   con pre-requisitos y lo que habilita cada feature.
+
+6. **MVP Definition**:
+   - Tabla COMPLETA features priorizados (25+ features): Journey, Pain point, Impacto C/V, 
+     Esfuerzo, Prioridad (P0/P1/P2), En MVP (Sí/No)
+   - Tabla MVP ONLY (12-15 features P0): Justificación inclusión, Sprint asignado
+   - Success metrics (3 meses): Supply, Demand, Transaccional, Quality, Business
+   - Go/No-Go thresholds
+
+7. **Risks & Mitigation**: Risk matrix con probabilidad, impacto, mitigación
+
+8. **GTM Sequencing**: Pre-launch (seed supply) → Soft launch (primeras transacciones) → 
+   Growth. Métricas cada fase.
+
+9. **Open Questions**: 3-5 preguntas críticas que MVP debe responder con criterios decisión
+
+10. **Recommendations**: Ejecutivo con findings clave y next steps
+
+**Criterios MVP**:
+- Bloqueante para transacción básica
+- Resuelve pain point crítico compartido  
+- Mitiga riesgo abandono
+- Habilita efecto red mínimo
+
+Output: Markdown, tablas claras, 15-20 páginas.

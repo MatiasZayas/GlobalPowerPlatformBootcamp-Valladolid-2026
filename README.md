@@ -1,5 +1,9 @@
 # GlobalPowerPlatformBootcamp-Valladolid-2026
 
+**Authors:** 
+David Zambrano Cruz: https://www.linkedin.com/in/dzambranocruz/
+Matias Zayas: https://www.linkedin.com/in/matiaszayas/
+
 ## Presentación de Prototipado
 
 Welcome to the Global Power Platform Bootcamp 2026 - Valladolid edition! This repository contains resources, code samples, and documentation for the bootcamp sessions focused on prototyping and Power Platform development.

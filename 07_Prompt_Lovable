@@ -1,0 +1,329 @@
+Eres un expert full-stack developer especializado en marketplaces B2B. Vas a construir 
+PucelaStock, un marketplace B2B industrial local que conecta empresas que necesitan material 
+urgente (compradores) con empresas que tienen stock excedente para vender (vendedores).
+
+## CONTEXTO DEL PRODUCTO
+
+PucelaStock resuelve dos problemas críticos en polígonos industriales:
+
+PROBLEMA COMPRADOR (Carlos):
+- Necesita material urgente (bomba hidráulica, perfiles acero, rodamientos, etc.) en <24h
+- Actualmente: Llama a 8-10 proveedores secuencialmente (90 min desperdiciados)
+- Paga sobreprecio 25-60% por urgencia
+- No sabe quién en su zona tiene lo que necesita
+
+PROBLEMA VENDEDOR (Elena):
+- Tiene 76.000€ de stock obsoleto ocupando almacén
+- Actualmente: Proceso venta 6-8 semanas por lote (kafkiano)
+- Malvende a chatarrero por 20% del valor original
+- No tiene canal para llegar a compradores potenciales
+
+SOLUCIÓN:
+Marketplace local B2B donde Elena publica lotes en 12 minutos y Carlos encuentra material 
+en 5 minutos, con verificación empresas, facturación automática y valoraciones.
+
+---
+
+## MVP SCOPE - 13 FEATURES CORE
+
+Construye un MVP con exactamente estas 13 features (prioridad P0):
+
+### 1. REGISTRO + AUTENTICACIÓN
+**User Story Comprador**:
+Como Carlos (Comprador), quiero registrarme con email y datos empresa, para buscar material 
+y contactar vendedores, en <5 minutos.
+
+**User Story Vendedor**:
+Como Elena (Vendedora), quiero registrarme indicando que soy vendedora, para publicar lotes 
+tras verificación.
+
+**Specs Técnicas**:
+- Form registro: Email, Password, Nombre completo, Empresa, CIF (formato español)
+- Checkbox: "Quiero vender material" (determina rol: comprador/vendedor/ambos)
+- Validación email: formato + no duplicado
+- Validación CIF: formato español válido (regex: /^[A-Z]\d{8}$|^\d{8}[A-Z]$/)
+- Confirmación email automática (link expira 24h)
+- Auth con JWT o similar (Firebase Auth, Supabase Auth, etc.)
+- Session persistente (remember me)
+
+**UI/UX**:
+- Form limpio, máximo 5 campos visibles
+- Mensajes error claros ("CIF debe ser formato español válido")
+- Progress indicator si verificación tarda
+- Redirect post-registro: Vendedor → Verificación CIF, Comprador → Búsqueda
+
+---
+
+### 2. VERIFICACIÓN CIF EMPRESAS
+**User Story Vendedor**:
+Como Elena, quiero que mi empresa sea verificada automáticamente, para que compradores 
+confíen y pueda publicar, obteniendo badge "Empresa Verificada" en <4h.
+
+**User Story Comprador**:
+Como Carlos, quiero ver badge "Empresa Verificada" en vendedores, para confiar antes de comprar.
+
+**Specs Técnicas**:
+- POST-REGISTRO: Si usuario es vendedor, trigger verificación CIF
+- Verificación automática:
+  * Consultar API externa CIF española (ej: API AEAT si disponible, sino base datos pública)
+  * Si API no disponible: Marcar "Verificación Manual Pendiente", notificar admin
+- Badge "Empresa Verificada ✓" en:
+  * Perfil usuario
+  * Ficha producto (junto a nombre vendedor)
+  * Listado búsqueda
+- Tooltip badge: "Verificado por PucelaStock: CIF validado contra registros oficiales"
+- Vendedor NO puede publicar lotes hasta verificado
+- Email notificación cuando verificación completa
+
+**UI/UX**:
+- Badge verde con checkmark ✓
+- Si verificación pendiente: Banner "Tu cuenta está en verificación, recibirás email en <4h"
+- Admin panel: Lista usuarios pendientes verificación manual
+
+**Fallback MVP**: Si API AEAT no disponible, TODA verificación manual por admin (<4h commitment)
+
+---
+
+### 3. PUBLICACIÓN LOTE - WIZARD GUIADO
+**User Story Vendedor**:
+Como Elena, quiero publicar un lote de material en <15 minutos usando wizard guiado, para 
+convertir stock en lotes vendibles sin fricción.
+
+**Specs Técnicas - Wizard 5 Pasos**:
+
+**PASO 1 - FOTOS** (obligatorio):
+- Upload 1-5 imágenes (drag & drop)
+- Preview antes de siguiente paso
+- Validación básica: peso <5MB, formato jpg/png/webp
+- OPCIONAL MVP: Blur detection (rechazar si muy borrosa)
+
+**PASO 2 - CATEGORÍA** (obligatorio):
+- Select dropdown con 10 categorías:
+  * Perfiles de Acero
+  * Rodamientos
+  * Cables Eléctricos
+  * Bombas Hidráulicas
+  * Válvulas Industriales
+  * Conectores/Tornillería
+  * Motores Eléctricos
+  * Material Eléctrico
+  * Tubería/Fontanería
+  * Otro (especificar)
+- OPCIONAL MVP: Sugerencia automática basada en fotos (IA)
+
+**PASO 3 - DESCRIPCIÓN** (obligatorio):
+- Template pre-llenado según categoría seleccionada
+- Campos ejemplo para "Perfiles de Acero":
+  * Material: [input text] (ej: S275JR)
+  * Dimensiones: [textarea] (ej: varios tamaños, ver fotos)
+  * Cantidad: [input text] (ej: 8 pallets, aprox 2.000 kg)
+  * Condición: [radio] Nuevo sin usar / Usado - excelente / Usado - bueno / Para repuestos
+  * Origen/Historia: [textarea] (ej: Excedente proyecto cancelado)
+- Total caracteres: 150-500 (guiar con contador)
+
+**PASO 4 - PRECIO Y DISPONIBILIDAD** (obligatorio):
+- Precio: [input number] €
+- Sugerencia estática: "Material similar en esta categoría se vende entre 40-55% del valor original"
+- Checkbox: "Acepto ofertas" (permite negociación)
+- Disponibilidad: [radio] Recogida inmediata / Entrega (indicar coste) / Ambas
+- Ubicación: Ciudad autodetectada (geolocalizacion o manual), Dirección almacén (opcional, 
+  solo visible post-contacto)
+
+**PASO 5 - REVISAR Y PUBLICAR**:
+- Preview completo del lote
+- Botón "Publicar Lote"
+- Botón "Guardar Borrador" (puede volver después)
+
+**Specs Adicionales**:
+- Guardar progreso automático cada paso (localStorage o DB)
+- Navegación: Botones "Siguiente", "Anterior", "Guardar y salir"
+- Validación: No puede avanzar si campos obligatorios vacíos
+- Post-publicación: Confirmación "✅ Lote publicado" + link a ficha
+
+**UI/UX**:
+- Stepper visual (1→2→3→4→5)
+- Mobile-first (Elena publica desde tablet en almacén)
+- Instrucciones claras cada paso
+- Tiempo estimado: "~12 minutos"
+
+---
+
+### 4. TEMPLATES DESCRIPCIÓN (10 CATEGORÍAS)
+**Integrado en Feature #3 Paso 3**
+
+Templates específicos para cada categoría (campos relevantes precargados):
+- Perfiles de Acero: Material, Dimensiones, Cantidad, Condición, Origen
+- Rodamientos: Tipo, Referencia, Diámetro, Cantidad, Condición
+- Cables: Tipo, Sección, Longitud, Cantidad, Condición
+- Bombas: Marca, Modelo, Caudal, Presión, Condición
+- Etc. (crear template para cada una de las 10 categorías)
+
+---
+
+### 5. BÚSQUEDA + FILTROS POTENTES
+**User Story Comprador**:
+Como Carlos, quiero buscar material urgente con filtros, para encontrar lo que necesito en 
+<5 minutos en mi zona.
+
+**Specs Técnicas - Búsqueda**:
+- Barra búsqueda principal (hero section homepage comprador)
+- Search query: Text input, placeholder "ej: bomba hidráulica, perfiles acero, rodamientos..."
+- Búsqueda fuzzy (tolerante a typos: "bomva" → "bomba")
+- Búsqueda por:
+  * Título/nombre lote
+  * Descripción (campos template)
+  * Categoría
+  * Nombre vendedor
+- Enter o botón "Buscar" → Resultados
+
+**Specs Técnicas - Filtros** (sidebar o top bar):
+- **Categoría**: Multi-select (10 categorías)
+- **Ubicación**: 
+  * Dropdown ciudades polígonos industriales (ej: Valladolid, Madrid, Barcelona, Bilbao)
+  * Radio: 10km / 25km / 50km / 100km / Toda España
+- **Disponibilidad**:
+  * Radio: Disponible hoy / Disponible esta semana / Disponible bajo pedido
+- **Precio**:
+  * Slider range: 0€ - 50.000€ (o inputs min/max)
+- **Condición**:
+  * Checkboxes: Nuevo sin usar / Usado - excelente / Usado - bueno / Para repuestos
+
+**Specs Técnicas - Resultados**:
+- Grid de cards (3 columnas desktop, 1 móvil)
+- Cada card muestra:
+  * Foto principal lote
+  * Título (generado: "{Categoría} - {Descripción breve}")
+  * Precio (grande, bold)
+  * Ubicación (ciudad + distancia si geoloc habilitada)
+  * Disponibilidad (badge "Disponible hoy" verde)
+  * Vendedor (nombre empresa + badge verificado)
+  * Botón "Ver Detalles"
+- Ordenar por:
+  * Relevancia (default)
+  * Precio: menor a mayor
+  * Precio: mayor a menor
+  * Distancia: más cerca primero
+  * Fecha publicación: más reciente primero
+- Paginación o infinite scroll
+- Mensaje si 0 resultados: "No encontramos lotes con estos criterios. Intenta ampliar filtros 
+  o guarda esta búsqueda para recibir alertas." (Feature búsquedas guardadas es P2, NO en MVP, 
+  pero mostrar mensaje preparatorio)
+
+**Performance**:
+- Search debe retornar resultados en <1 segundo
+- Usar índices de búsqueda (Elasticsearch, Algolia, o search nativo DB si performante)
+
+**UI/UX**:
+- Mobile-first
+- Filtros colapsables en móvil (hamburger menu)
+- Contador resultados: "42 lotes encontrados"
+- Highlighting términos búsqueda en resultados
+
+---
+
+### 6. FICHA PRODUCTO DETALLADA
+**User Story Ambos**:
+Como Carlos, quiero ver todos los detalles del lote antes de contactar, para decidir si me interesa.
+Como Elena, quiero que mi lote se vea profesional y completo, para atraer compradores.
+
+**Specs Técnicas**:
+- URL: `/lote/{id}` o `/lote/{slug}`
+
+**Secciones Ficha**:
+
+**A) GALERÍA FOTOS**:
+- Carousel principal (imágenes grandes)
+- Thumbnails navegables
+- Zoom on click (modal fullscreen)
+
+**B) INFORMACIÓN PRINCIPAL** (col derecha):
+- Título lote (categoría + descripción breve)
+- Precio: Grande, bold (ej: 7.500€)
+- Badge disponibilidad: "Disponible para recogida inmediata" (verde)
+- Vendedor:
+  * Nombre empresa
+  * Badge "Empresa Verificada ✓"
+  * Valoración promedio (estrellas) + nº valoraciones (ej: ⭐⭐⭐⭐⭐ 4.8 (12 valoraciones))
+  * Link "Ver perfil vendedor"
+- Botón CTA principal: "Contactar Vendedor" (grande, destacado)
+- Botón secundario: "Guardar en Favoritos" (corazón, opcional MVP)
+
+**C) DESCRIPCIÓN DETALLADA** (acordeón o tabs):
+- Campos del template (ej: Material: S275JR, Dimensiones: [...], etc.)
+- Historia/origen del material (textarea del vendedor)
+
+**D) UBICACIÓN**:
+- Ciudad
+- "A 25 km de ti" (si geoloc habilitada)
+- OPCIONAL: Mapa embebido (Google Maps) mostrando zona general (no dirección exacta, 
+  privacidad)
+
+**E) CONDICIONES**:
+- Precio incluye IVA: Sí/No
+- Forma pago aceptada: Transferencia / Efectivo / Ambas
+- Recogida / Entrega / Ambas
+- Notas adicionales (campo libre vendedor)
+
+**F) VALORACIONES VENDEDOR** (preview):
+- Últimas 3 valoraciones de otros compradores
+- Link "Ver todas las valoraciones"
+
+**G) LOTES SIMILARES** (sección bottom):
+- "Otros lotes que podrían interesarte"
+- 3-4 lotes misma categoría o mismo vendedor
+
+**UI/UX**:
+- Mobile-responsive (col izq fotos, col derecha info en desktop; stack en móvil)
+- Breadcrumb: Inicio > Búsqueda > [Categoría] > [Título lote]
+- Share buttons (WhatsApp, Email, Copiar link)
+- SEO: Meta tags (title, description, og:image)
+
+---
+
+### 7. CHECKOUT BÁSICO (CONTACTO VENDEDOR)
+**User Story Comprador**:
+Como Carlos, quiero contactar al vendedor fácilmente, para negociar y coordinar compra.
+
+**Specs Técnicas**:
+En ficha producto, botón "Contactar Vendedor" abre modal o nueva página:
+
+**FORM CONTACTO**:
+- Nombre: [prefilled from user profile]
+- Empresa: [prefilled]
+- Email: [prefilled]
+- Teléfono: [prefilled o input]
+- Mensaje: [textarea]
+  * Placeholder: "Hola, estoy interesado en este lote. ¿Está disponible para recogida mañana? 
+    ¿Podemos acordar precio final?"
+  * Contador caracteres (min 20, max 500)
+- Checkbox: "Enviar copia a mi email"
+- Botón: "Enviar Mensaje"
+
+**BACKEND**:
+- Email automático a vendedor:
+  * Asunto: "🔔 Nuevo interés en tu lote: [Título lote]"
+  * Contenido:
+    - "[Nombre comprador] de [Empresa comprador] está interesado en tu lote."
+    - Mensaje del comprador
+    - Datos contacto comprador (email, teléfono)
+    - Link directo a lote
+    - CTA: "Responder a [email comprador]"
+- Email confirmación a comprador:
+  * "Hemos enviado tu mensaje a [Vendedor]. Te responderán pronto a [tu email]."
+- Registrar evento en DB:
+  * Tabla "consultas" o "leads": lote_id, comprador_id, vendedor_id, mensaje, timestamp
+  * Estado: "Enviado" (para futuras analytics)
+
+**OPCIONAL MVP** (si tiempo):
+- Notificación in-app a vendedor (badge "1 nuevo mensaje")
+- Chat básico in-app (pero email suficiente para MVP según análisis)
+
+**UI/UX**:
+- Modal overlay (no redirigir a nueva página, mantener contexto)
+- Validación: No vacío, email válido, teléfono formato válido
+- Loading state al enviar
+- Success message: "✅ Mensaje enviado. [Vendedor] recibirá tu mensaje por email."
+- Error handling: "❌ Error enviando mensaje. Intenta de nuevo."
+
+**IMPORTANTE**: Este es el equivalente a "checkout" en MVP. NO hay pago integrado en plataforma 
+en MVP. Comprador y vendedor coordinan pago (transferencia directa) y entrega por email

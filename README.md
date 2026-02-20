@@ -1,12 +1,13 @@
 # GlobalPowerPlatformBootcamp-Valladolid-2026
 
 **Authors:** 
-David Zambrano Cruz: https://www.linkedin.com/in/dzambranocruz/
-Matias Zayas: https://www.linkedin.com/in/matiaszayas/
+
+- David Zambrano Cruz: https://www.linkedin.com/in/dzambranocruz/
+- Matias Zayas: https://www.linkedin.com/in/matiaszayas/
 
 ## Presentación de Prototipado
 
-Welcome to the Global Power Platform Bootcamp 2026 - Valladolid edition! This repository contains resources, code samples, and documentation for the bootcamp sessions focused on prototyping and Power Platform development.
+Welcome to the Global Power Platform Bootcamp 2026 - Valladolid edition! This repository contains resources, code samples, and documentation for the bootcamp sessions focused on prototyping and business validation (intake).
 
 ### Overview
 
@@ -15,7 +16,7 @@ This bootcamp brings together developers and professionals to explore the latest
 ### Contents
 
 - **Sessions**: Bootcamp session materials and presentations
-- **Samples**: Code samples and prototypes
+- **Samples**: Prompts samples
 - **Documentation**: Technical guides and references
 - **Resources**: Additional learning materials
 
@@ -28,17 +29,8 @@ This bootcamp brings together developers and professionals to explore the latest
 
 ### Topics Covered
 
-- Power Apps development
-- Power Automate workflows
-- Power BI insights
-- Business process flows
-- Integration patterns
-
-### Prerequisites
-
-- Microsoft 365 account
-- Basic knowledge of Power Platform concepts
-- Developer environment setup
+- Prompts for LLMs. 
+- Prompts for Lovable. 
 
 ### Contact & Support
 
